@@ -96,5 +96,19 @@ in let times4 = (fix t4m)
                   in let times4 = proc(x) ((makemult makemult) x)
                      in (times4 3)" 12)
 
+      (factorial "let makemult = proc(maker) % this will be recursive
+   proc(x) proc(y)
+      if zero?(x) then 0
+      else -((((maker maker) -(x,1)) y), -(0,y))
+in let mult = proc(x) proc(y) 
+   (((makemult makemult) x) y)
+in let makefact = proc(maker) % this will be recursive
+    proc(n)
+      if zero?(n) then 1
+      else let n-1_fact = ((maker maker) -(n,1))
+      in ((mult n-1_fact) n)
+in let fact = proc(n) ((makefact makefact) n)
+in (fact 4) % will output 4! = 24" 24)
+
       ))
   )
