@@ -73,5 +73,20 @@ in let
     t4m = proc (f) proc(x) if zero?(x) then 0 else -((f -(x,1)),-4)
 in let times4 = (fix t4m)
    in (times4 3)" 12)
+
+    (same-abs "let f = proc(x) proc(y)
+                if zero?(-(x,y)) then zero?(-(x,y))
+                else zero?(-(-(0,x),y))
+                in ((f 3) 4)" #f)
+
+      (same-abs2 "let f = proc(x) proc(y)
+                if zero?(-(x,y)) then zero?(-(x,y))
+                else zero?(-(-(0,x),y))
+                in ((f 4) 4)" #t)
+
+      (same-abs3 "let f = proc(x) proc(y)
+                if zero?(-(x,y)) then zero?(-(x,y))
+                else zero?(-(-(0,x),y))
+                in ((f 4) -4)" #t)
       ))
   )
