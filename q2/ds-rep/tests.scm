@@ -88,5 +88,13 @@ in let times4 = (fix t4m)
                 if zero?(-(x,y)) then zero?(-(x,y))
                 else zero?(-(-(0,x),y))
                 in ((f 4) -4)" #t)
+
+      (make-mult "let makemult = proc(maker)
+                     proc(x)
+                        if zero?(x) then 0
+                        else -(((maker maker) -(x,1)), -4)
+                  in let times4 = proc(x) ((makemult makemult) x)
+                     in (times4 3)" 12)
+
       ))
   )
