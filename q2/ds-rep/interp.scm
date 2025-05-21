@@ -71,16 +71,16 @@
         (call-exp (rator rand)
           (let ((proc (expval->proc (value-of rator env)))
                 (arg (value-of rand env)))
-            (apply-procedure proc arg env)))
+            (apply-procedure proc arg)))
 
         )))
 
   ;; apply-procedure : Proc * ExpVal -> ExpVal
   ;; Page: 79
   (define apply-procedure
-    (lambda (proc1 val env)
+    (lambda (proc1 val)
       (cases proc proc1
         (procedure (var body saved-env)
-          (value-of body (extend-env var val env))))))
+          (value-of body (extend-env var val saved-env))))))
 
   )
