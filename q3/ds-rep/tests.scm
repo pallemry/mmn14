@@ -6,7 +6,7 @@
   
   (define test-list
     '(
-  
+      (proc-with-named-args-1 "let p = proc(x=1,y=2) -(x,y) in (p x=1)" -1)
       ;; simple arithmetic
       (positive-const "11" 11)
       (negative-const "-33" -33)
@@ -73,5 +73,7 @@ in let
     t4m = proc (f) proc(x) if zero?(x) then 0 else -((f -(x,1)),-4)
 in let times4 = (fix t4m)
    in (times4 3)" 12)
+      (proc-with-named-args "let p = proc(x=1,y=2) -(x,y) in (p x=5,y=-1)" 6)
+
       ))
   )

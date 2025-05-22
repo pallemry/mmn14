@@ -50,9 +50,14 @@
 
   ;; proc? : SchemeVal -> Bool
   ;; procedure : Var * Exp * Env -> Proc
+  ;; (define-datatype proc proc?
+  ;;   (procedure
+  ;;     (var symbol?)
+  ;;     (body expression?)
+  ;;     (env environment?)))
   (define-datatype proc proc?
     (procedure
-      (var symbol?)
+      (params list?)
       (body expression?)
       (env environment?)))
 

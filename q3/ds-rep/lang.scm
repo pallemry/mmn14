@@ -40,14 +40,29 @@
        ("let" identifier "=" expression "in" expression)
        let-exp)   
 
+
+      ;; named argument with value
+      (named-var
+       (identifier "=" expression)
+        a-named-var)
+
+      ;; procedure call with named arguments and default values. (**kwargs + **defaults)
       (expression
-       ("proc" "(" identifier ")" expression)
-       proc-exp)
+       ("proc" "(" (separated-list named-var ",") ")" expression)
+       proc-multi-named-exp)
 
       (expression
-       ("(" expression expression ")")
-       call-exp)
+       ("(" expression (separated-list named-var ",") ")")
+        call-multi-named-exp)
+
+      ;; (expression
+      ;;  ("proc" "(" identifier ")" expression)
+      ;;  proc-exp)
       
+      ;; (expression
+      ;;  ("(" expression expression ")")
+      ;;  call-exp)
+
       ))
 
   ;;;;;;;;;;;;;;;; sllgen boilerplate ;;;;;;;;;;;;;;;;
