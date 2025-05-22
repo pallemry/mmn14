@@ -80,7 +80,7 @@ in let times4 = (fix t4m)
        8
       )
 
-      (y-combinator-3 "let f = proc(n)
+      (question-1-c "let f = proc(n)
                           if zero?(n) then
                             0
                           else
