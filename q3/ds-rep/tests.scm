@@ -6,7 +6,6 @@
   
   (define test-list
     '(
-      (proc-with-named-args-1 "let p = proc(x=1,y=2) -(x,y) in (p x=1)" -1)
       ;; simple arithmetic
       (positive-const "11" 11)
       (negative-const "-33" -33)
@@ -56,24 +55,68 @@
       (check-shadowing-in-rhs "let x = 3 in let x = -(x,1) in x" 2)
 
       ;; simple applications
-      (apply-proc-in-rator-pos "(proc(x) -(x,1)  30)" 29)
-      (apply-simple-proc "let f = proc (x) -(x,1) in (f 30)" 29)
-      (let-to-proc-1 "(proc(f)(f 30)  proc(x)-(x,1))" 29)
+      (apply-proc-in-rator-pos "(proc(x=0) -(x,1)  x=30)" 29)
+      (apply-simple-proc "let f = proc (x=0) -(x,1) in (f x=30)" 29)
+      (let-to-proc-1 "(proc(f=0)(f x=30)  f=proc(x=0)-(x,1))" 29)
 
 
-      (nested-procs "((proc (x) proc (y) -(x,y)  5) 6)" -1)
-      (nested-procs2 "let f = proc(x) proc (y) -(x,y) in ((f -(10,5)) 6)"
+      (nested-procs "((proc (x=0) proc (y=0) -(x,y)  x=5) y=6)" -1)
+      (nested-procs2 "let f = proc(x=0) proc (y=0) -(x,y) in ((f x=-(10,5)) y=6)"
         -1)
       
-      (y-combinator-1 "
-let fix =  proc (f)
-            let d = proc (x) proc (z) ((f (x x)) z)
-            in proc (n) ((f (d d)) n)
-in let
-    t4m = proc (f) proc(x) if zero?(x) then 0 else -((f -(x,1)),-4)
-in let times4 = (fix t4m)
-   in (times4 3)" 12)
-      (proc-with-named-args "let p = proc(x=1,y=2) -(x,y) in (p x=5,y=-1)" 6)
+;;       (y-combinator-1 "
+;; let fix =  proc (f=0)
+;;             let d = proc (x=0) proc (z=0) ((f f=(x x=x)) z=z)
+;;             in proc (n=0) ((f f=(d x=d)) z=n)
+;; in let
+;;     t4m = proc (f) proc(x) if zero?(x) then 0 else -((f -(x,1)),-4)
+;; in let times4 = (fix t4m)
+;;    in (times4 3)" 12)
+      (proc-named-args-1 "let p = proc(x=1,y= 2) -(x,y) in (p)" -1)
+
+      (proc-named-args-2 "let p = proc(x=1,y=2) -(x,y) in (p  x=  5)" 3)
+
+      (proc-named-args-3 "let p = proc(x=1 , y=2) -(x,y) in (p x=5,y=-1)" 6)
+
+      (proc-named-args-4 "let p = proc(x=1, y=2) -(x,y) in (p y=-1, x=5)" 6)
+      
+      ;; Given y a value twice
+      (proc-named-args-error-1 "let p = proc(x=1, y=2) -(x,y) in (p y=-1,y=5)" error) 
+      
+      ;; Given the parameter a, even though it is not defined in the proc
+      (proc-named-args-error-1 "let p = proc(x=1,y=2,z=1) -(x,y) in (p x=-1,y=5,a=5)" error) 
+      
+      ;; Defined a function with x two times
+      (proc-named-args-error-2 "let p = proc(x=1,y=2,x=3) -(x,y) in (p x=-1,y=5)" error)
+
+      ;; Given a function too many arguments
+      (proc-named-args-error-3 "let p = proc(x=1,y=2) -(x,y) in (p x=-1,y=5,z=5)" error)
+      
+      (proc-2-named-args-1 "
+let p = proc(a=10,b=20,c=30) 
+        -(c, -(a,b))
+in
+    (p)" 40)
+
+    (proc-2-named-args-2 "
+let p = proc(a=10,b=20,c=30) 
+        -(c, -(a,b))
+in
+    (p b=50)" 70)
+
+    (proc-2-named-args-3 "
+let p = proc(a=10,b=20,c=30) 
+        -(c, -(a,b))
+in
+    (p x=50)" error) ;; Because x is not defined in the proc
+
+      (proc-2-named-args-4 "
+let p = proc(a=10,b=20,c=30) 
+        -(c, -(a,b))
+in 
+   (p c=100, a=35)" 85)
+
+      
 
       ))
   )

@@ -73,10 +73,12 @@
         ;;         (arg (value-of rand env)))
         ;;     (apply-procedure proc arg)))
 
-        (proc-multi-named-exp (named-vars body)
-          (proc-val (procedure named-vars body env)))
+        (proc-exp (named-vars body)
+          (if (has-duplicate-ids? named-vars)
+            (eopl:error 'proc-exp "Duplicate named arguments in function definition")
+          (proc-val (procedure named-vars body env))))
         
-        (call-multi-named-exp (rator named-vars)
+        (call-exp (rator named-vars)
           (let ((proc (expval->proc (value-of rator env))))
             (apply-procedure-named proc named-vars)))
 

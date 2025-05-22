@@ -49,11 +49,11 @@
       ;; procedure call with named arguments and default values. (**kwargs + **defaults)
       (expression
        ("proc" "(" (separated-list named-var ",") ")" expression)
-       proc-multi-named-exp)
+       proc-exp)
 
       (expression
        ("(" expression (separated-list named-var ",") ")")
-        call-multi-named-exp)
+        call-exp)
 
       ;; (expression
       ;;  ("proc" "(" identifier ")" expression)
